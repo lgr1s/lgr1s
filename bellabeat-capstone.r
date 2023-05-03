@@ -139,7 +139,7 @@ num_below8k
 ```{r}
 avg_steps_per_uesr <- aggregate(StepTotal ~ Id, data = daily_steps, FUN =mean)
 
-avg_steps_per_uesr %>% summary(select(StepTotal))
+avg_steps_per_uesr %>% select(StepTotal) %>% summary()
 
 above_avg_user <- avg_steps_per_uesr$StepTotal > 7638
 num_above_avg_user <- sum(above_avg_user)
