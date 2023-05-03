@@ -1,3 +1,4 @@
+# %% [code]
 
 ---
 title: "Bellabeat Capstone"
@@ -35,7 +36,8 @@ knowledge about their own health and habits.
 library(tidyverse)
 ```
 
-### Importing datasets
+### Importing datasets.
+#### Data sets have a csv format so I will use a read.csv() function to import them
 
 ```{r}
 daily_activity <- read.csv("/kaggle/input/fitbit/Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv")
@@ -51,7 +53,7 @@ hourly_steps <- read.csv("/kaggle/input/fitbit/Fitabase Data 4.12.16-5.12.16/hou
 Data taken from [link](https://www.kaggle.com/datasets/arashnic/fitbit)
 
 ### Exploring the data
-
+#### I will use n_distinct function to see amount of users in each data frame
 ```{r}
 n_distinct(daily_activity$Id)
 n_distinct(daily_sleep$Id)
@@ -79,10 +81,10 @@ daily_activity$Date=as.POSIXct(daily_activity$Date, format="%m/%d/%Y", tz=Sys.ti
 names(daily_sleep)[2] <- "Date"
 daily_sleep$Date=as.POSIXct(daily_sleep$Date, format="%m/%d/%Y", tz=Sys.timezone())
 ```
-
+#### After formatting dates look like: mm-dd-yy (Was mm/dd//yy in some cases there was a time hh:mm:ss).
 
 ### Watching the summary of each data set
-
+#### I selected the most important summary data like: activity of the user, his sleeping, amount of steps etc.
 ```{r}
 daily_activity %>% 
   select(TotalDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, Calories) %>%
