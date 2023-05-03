@@ -1,3 +1,4 @@
+
 ---
 title: "Bellabeat Capstone"
 author: "Nikolai Chakhvashvili"
@@ -109,7 +110,7 @@ calories_per_day %>% select(Calories) %>% summary()
 * The amount of sedentary minutes is enormous. Average is more than 16 hours. **Could be reduced by notification to make some exercises**
 * The amount of fairly active minutes and distance is the lowest
 
-#### According to medical research the 8000 steps decrease the chance of any mortal case by 51% so I will check how many days are making more and less than average steps which is 7638 and 8000
+#### According to medical research making 8000  steps in a day decrease the chance of any mortal case by 51% so I will check how many days are making more and less than average steps which is 7638 and 8000
 
 ```{r}
 above_avg <- daily_steps$StepTotal > 7638
