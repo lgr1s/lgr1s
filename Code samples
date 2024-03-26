@@ -18,7 +18,7 @@ class Scratch {
     }
 
     public static class CountryManager {
-        private List<Country>countries;
+        private List<Country>countries  = new CountryRepository().getAll();
         
 
         public void printCapitalsInAlphabetOrder(){
